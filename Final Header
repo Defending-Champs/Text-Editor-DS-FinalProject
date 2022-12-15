@@ -1,0 +1,103 @@
+#pragma once
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<conio.h>
+using namespace std;
+//Trie trees searching words
+//Trie tree adt
+
+struct TrieNode
+{
+	//Member variables
+	TrieNode* links[26];
+	bool flag = false;
+	//Member functions
+	bool containKey(char);                   //checks if the reference trie is present or not
+	void put(char, TrieNode*);               //creating reference trie
+	TrieNode* get(char);                          //to get the next node for traversal
+	void setEnd();                                //setting flag to true at the end of the word
+	bool isEnd();                                 //checking if the word is completed or not
+};
+
+
+
+class TrieTree
+{
+private:
+	int sugg_Limit = 10;
+	int count = 0;
+	int present = 0;
+	string* strSuggessions;
+public:
+	TrieNode* root;
+	TrieTree();
+	void insert(string);
+	void suggestionsRec(TrieNode*, string);
+	void selectWord(string&);
+	int printAutoSuggestions(TrieNode*, string);           // print suggestions for given query prefix
+};
+
+
+//Priority queue adt
+
+struct PQ_node
+{
+	char data;
+	int prior;
+	PQ_node* next = NULL;
+	PQ_node();
+};
+
+class P_Queue
+{
+private:
+	PQ_node* head;
+public:
+	char queueArray[26];
+	int priority[26];
+	int queueSize;
+	P_Queue(); // constructor
+	bool IsEmpty();
+	void Insert(char, int);
+	void sort(char[], int[]); // Applying bubble sort algorithim for sorting
+	void display(); // Function to display the values of queue
+	void get(string, int);
+};
+
+
+
+
+//Huffman encoding
+//Minheap adt
+
+struct Mnode
+{
+	Mnode* left, * right;
+	Mnode* next;
+	char data;
+	int prior;
+	Mnode();
+};
+
+class MHeap
+{
+	Mnode* root;
+	string* arr;
+	int CharNum;
+	int size;
+public:
+	fstream codes, org, encoded;
+	MHeap();
+	void Insert(P_Queue);
+	void Enqueue(Mnode*);
+	Mnode* Dequeue();
+	void sort();
+	Mnode* system();
+	void HuffMan();
+	void Search(Mnode* crr, string, char, string&);
+	void FindCode(string&, char);
+	void AssignCodes(P_Queue, string);
+	void read();
+};
+
