@@ -1,0 +1,169 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include"Header.h"
+#include<conio.h>
+using namespace std;
+
+//Main / Driver program
+int main()
+{
+	TrieTree obj;
+	MHeap Mobj;
+	P_Queue Pobj;
+
+	string R, str1, search, str = "", str2, choice;
+	int h = 0;
+	ifstream wordsfile;
+	wordsfile.open("outfile.txt");
+	while (!wordsfile.eof())
+	{
+		int TT = 1;
+		int s;
+		wordsfile >> R;
+		s = R.size();
+		for (int i = 0; i < s; ++i)
+		{
+			if (R[i] < 'a' || R[i]>'z')
+			{
+				TT = 0;
+			}
+		}
+		if (TT == 1)
+		{
+			obj.insert(R);
+		}
+		h++;
+	}
+	cout << "Enter 1 if you want to decode the last text : \n";
+	cin >> choice;
+	char c;
+	if (choice == "1")
+	{
+		Mobj.encoded.open("Encoded_Text.txt", ios::in);
+		if (Mobj.encoded)
+		{
+			Mobj.encoded >> c;
+			if (Mobj.encoded.eof())
+			{
+				cout << "File is empty\n";
+			}
+			else
+			{
+				Mobj.read();
+			}
+		}
+		else
+		{
+			cout << "File not opened\n";
+		}
+	}
+	cout << "\nEnter string : " << str;
+	cin >> str2;
+	while (str2.size() > 1)
+	{
+		cout << "Enter a character not a string\n";
+		cin >> str2;
+	}
+	string Final;
+	str = str + str2;
+	int comp = obj.printAutoSuggestions(obj.root, str);
+	do
+	{
+		cout << "---> Press 1 if you want to select from these suggessions\n---> Press 2 to add more characters\n---> Press any key to complete the word\n";
+		cin >> choice;
+		if (choice == "1")
+		{
+			obj.selectWord(str);
+			cout << "\nEntered string is : " << str << endl;
+		}
+		else if (choice == "2")
+		{
+			system("cls");
+			cout << "Enter string : " << str;
+			cin >> str2;
+			while (str2 < "a" || str2>"z")
+			{
+				cout << "Enter from alphabet a to z\n";
+				cin >> str2;
+			}
+			while (str2.size() > 1)
+			{
+				cout << "Enter a character not a string\n";
+				cin >> str2;
+				while (str2 < "a" || str2>"z")
+				{
+					cout << "Enter from alphabet a to z\n";
+					cin >> str2;
+				}
+			}
+			str += str2;
+			int comp = obj.printAutoSuggestions(obj.root, str);
+		}
+		else
+		{
+			cout << "\nEntered string is : " << str << endl;
+			cout << "Enter = to complete string\nEnter 1 to Add another word\n\n";
+			if (_kbhit)
+			{
+				choice = _getch();				//get key using kbhit
+			}
+			while (choice != "=" && choice != "1")
+			{
+				cout << "Invalid key pressed\nEnter again : \n";
+				if (_kbhit)
+				{
+					choice = _getch();
+				}
+			}
+			if (choice == "=")
+			{
+				cout << "String completed\n";
+				Final += str;
+				break;
+			}
+			else
+			{
+				Final += str + " ";
+				str = "";
+				system("cls");
+				cout << "Enter string : " << str;
+				cin >> str2;
+				while (str2 < "a" || str2>"z")
+				{
+					cout << "Enter from alphabet a to z\n";
+					cin >> str2;
+				}
+				while (str2.size() > 1)
+				{
+					cout << "Enter a character not a string\n";
+					cin >> str2;
+					while (str2 < "a" || str2>"z")
+					{
+						cout << "Enter from alphabet a to z\n";
+						cin >> str2;
+					}
+				}
+				str += str2;
+				int comp = obj.printAutoSuggestions(obj.root, str);
+			}
+		}
+	} while (choice == "1" || choice == "2");
+	cout << "\nEntered string is : " << Final << endl;
+	system("pause");
+	system("cls");
+	int S = Final.length();
+	cout << "Entered string is : " << Final << endl << "Now encoding this into file : \n";
+	Pobj.get(Final, S);
+	Mobj.Insert(Pobj);
+	Mobj.HuffMan();
+	cout << "Enter 1 if you want to decode : \n";
+	cin >> choice;
+	if (choice == "1")
+	{
+		Mobj.AssignCodes(Pobj, Final);
+		Mobj.read();
+	}
+
+	system("pause");
+}
