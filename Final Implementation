@@ -1,3 +1,4 @@
+//----------------------------------------------------------------Implementation file----------------------------------------------------------------------------
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -5,56 +6,78 @@
 #include<conio.h>
 using namespace std;
 
-//Trie trees implementation
 
-//Trie Node
+						//-----------------------------------Trie trees Implementation-------------------------------------
 
-bool TrieNode::containKey(char ch)                   //checks if the reference trie is present or not
+
+//checks if the reference trie is present or not
+bool TrieNode::containKey(char ch)								
 {
 	return (links[ch - 'a'] != NULL);
 }
-void TrieNode::put(char ch, TrieNode* node)               //creating reference trie
+
+
+//creating reference trie
+void TrieNode::put(char ch, TrieNode* node)						
 {
 	links[ch - 'a'] = node;
 }
-TrieNode* TrieNode::get(char ch)                          //to get the next node for traversal
+
+
+//to get the next node for traversal
+TrieNode* TrieNode::get(char ch)	
 {
 	return links[ch - 'a'];
 }
-void TrieNode::setEnd()                                //setting flag to true at the end of the word
+
+
+//setting flag to true at the end of the word
+void TrieNode::setEnd()		
 {
 	flag = true;
 }
-bool TrieNode::isEnd()                                 //checking if the word is completed or not
+
+
+//checking if the word is completed or not
+bool TrieNode::isEnd()			                            
 {
 	return flag;
 }
 
-//Trie Tree
 
+//Constructor of trie tree
 TrieTree::TrieTree()
 {
+	sugg_Limit = 10;
+	count = 0;
+	present = 0;
 	root = new TrieNode();
 	strSuggessions = new string[sugg_Limit];
 }
+
+
+//Insert function to insert string in tree
 void TrieTree::insert(string word)
 {
 	TrieNode* node = root;
 	for (int i = 0; i < word.size(); i++)
 	{
-		if (!node->containKey(word[i]))        //If key is not contain then we add the node
+		if (!node->containKey(word[i]))				//If key is not present then we add the node
 		{
-			node->put(word[i], new TrieNode());    //IF that node is null then we create the node
+			node->put(word[i], new TrieNode());		//IF that node is null then we create the node
 		}
-		node = node->get(word[i]);             //moves to reference trie
+		node = node->get(word[i]);					//moves to reference trie
 	}
-	node->setEnd();                                //This will return true
+	node->setEnd();									//This will return true
 }
+
+
+//Recursive function to print suggessions
 void TrieTree::suggestionsRec(TrieNode* root, string currword)
 {
 	if (count < sugg_Limit)
 	{
-		if (root->flag)                    // found a string in Trie with the given prefix
+		if (root->flag)								 // found a string in Trie with the given prefix
 		{
 			strSuggessions[count] = currword;
 			count++;
@@ -63,7 +86,7 @@ void TrieTree::suggestionsRec(TrieNode* root, string currword)
 		}
 		for (int i = 0; i < 26; i++)
 		{
-			if (root->links[i])            // child node character value
+			if (root->links[i])						// child node character value
 			{
 				char child = 'a' + i;
 				suggestionsRec(root->links[i], currword + child);
@@ -71,13 +94,16 @@ void TrieTree::suggestionsRec(TrieNode* root, string currword)
 		}
 	}
 }
+
+
+//To select word from given suggessions
 void TrieTree::selectWord(string& str)
 {
 	int x = 0;
 	char pressed;
-	//string temp = str;
 	if (x == present)
 	{
+		cout << "No suggessions present!\nPress 2 or press anything else except 1\n";
 		return;
 	}
 	else
@@ -114,12 +140,22 @@ void TrieTree::selectWord(string& str)
 			}
 		}
 	}
-	if (x == present)			//If we proceeded to the last suggession then we will set out string to the last suggession
+	if (x == present)						//If we proceeded to the last suggession then we will set out string to the last suggession
 	{
+		system("cls");
+		cout << "Enter / for moving to next word\nEnter ; to select the word\n\n";
+		cout << "String --> " << str << endl << endl;
+		for (int i = 0; i < present; ++i)
+		{
+			cout << i + 1 << " : " << strSuggessions[i] << endl;
+		}
 		str = strSuggessions[present - 1];
 	}
 }
-int TrieTree::printAutoSuggestions(TrieNode* root, string word)           // print suggestions for given query prefix
+
+
+// print suggestions for given query prefix
+void TrieTree::printAutoSuggestions(TrieNode* root, string word)
 {
 	count = 0;
 	present = 0;
@@ -129,29 +165,29 @@ int TrieTree::printAutoSuggestions(TrieNode* root, string word)           // pri
 	{
 		if (!node->containKey(word[i]))         //If key is not contain then we add the node
 		{
-			return false;                           //If already key contain then this will return false
+			return;                           //If already key contain then this will return false
 		}
-		node = node->get(word[i]);               //moves to reference trie
+		node = node->get(word[i]);              //moves to reference trie
 	}
 	suggestionsRec(node, word);
-	return 1;
 }
 
 
+					//------------------------------------Huffman Implementation-------------------------------------
 
 
+													//Priority queue implementation
 
 
-//Priority queue implementation
-
-
+//Constructor of priority queue node
 PQ_node::PQ_node()
 {
 	next = NULL;
 }
 
 
-P_Queue::P_Queue() // constructor
+//Constructor of priority queue
+P_Queue::P_Queue() 
 {
 	queueSize = 0;
 	char a = 'a';
@@ -161,6 +197,9 @@ P_Queue::P_Queue() // constructor
 		priority[i] = 0;
 	}
 }
+
+
+//Check if queue is empty
 bool P_Queue::IsEmpty()
 {
 	if (head == NULL)
@@ -172,6 +211,9 @@ bool P_Queue::IsEmpty()
 		return false;
 	}
 }
+
+
+//inserting element in priority queue list
 void P_Queue::Insert(char ch, int num)
 {
 	PQ_node* curr = head;
@@ -198,7 +240,7 @@ void P_Queue::Insert(char ch, int num)
 		{
 			while (temp != NULL)
 			{
-				if ((curr->prior < temp->prior))
+				if ((curr->prior < temp->prior))			//Sorting the priority queue list by priority
 				{
 					PQ_node* tempNode = new PQ_node;
 					tempNode->data = temp->data;
@@ -217,7 +259,10 @@ void P_Queue::Insert(char ch, int num)
 		}
 	}
 }
-void P_Queue::sort(char queuArray[], int priority[]) // Applying bubble sort algorithim for sorting
+
+
+//Applying bubble sort algorithim for sorting the queue arr
+void P_Queue::sort(char queuArray[], int priority[]) 
 {
 	int temp;
 	for (int i = 0; i < 26; ++i)
@@ -226,19 +271,21 @@ void P_Queue::sort(char queuArray[], int priority[]) // Applying bubble sort alg
 		{
 			if (priority[j - 1] < priority[j])
 			{
-				//sorting the priority
-				temp = priority[j - 1];
+				temp = priority[j - 1];						//sorting the priority arr
 				priority[j - 1] = priority[j];
 				priority[j] = temp;
-				//sorting the queue with the help of priority
-				temp = queuArray[j - 1];
+				
+				temp = queuArray[j - 1];					//sorting the queue arr by priority
 				queuArray[j - 1] = queuArray[j];
 				queuArray[j] = temp;
 			}
 		}
 	}
 }
-void P_Queue::display() // Function to display the values of queue
+
+
+//Function to display the values of Priority queue list
+void P_Queue::display() 
 {
 	PQ_node* curr = head;
 	while (curr != NULL)
@@ -248,11 +295,14 @@ void P_Queue::display() // Function to display the values of queue
 	}
 	cout << endl;
 }
+
+
+//Main function which gets a string,its size and sort by priority and insert in list
 void P_Queue::get(string str, int size)
 {
-	for (int i = 0; i < size; i++) // loop till Size of string
+	for (int i = 0; i < size; i++)				// loop till Size of string
 	{
-		for (int j = 0; j < 26; j++) // loop for total alphabets
+		for (int j = 0; j < 26; j++)			// loop for total alphabets
 		{
 			if (str[i] == queueArray[j])
 			{
@@ -260,7 +310,7 @@ void P_Queue::get(string str, int size)
 			}
 		}
 	}
-	sort(queueArray, priority);
+	sort(queueArray, priority);	//Sorting both arrays
 	for (int i = 0; i < 26; i++)
 	{
 		if (priority[i] > 0)
@@ -270,28 +320,29 @@ void P_Queue::get(string str, int size)
 	}
 	for (int i = 0; i < queueSize; ++i)
 	{
-		Insert(queueArray[i], priority[i]);
+		Insert(queueArray[i], priority[i]);		//Inserting an element by giving char and priority
 	}
 }
 
 
+														//Minheap implementation
 
-
-//Minheap implementation
-
-
+//Constructor of MinHeap node
 Mnode::Mnode()
 {
 	left = right = NULL;
 }
 
 
+//Constructor of MinHeap
 MHeap::MHeap()
 {
 	int CharNum = 0;
 	int size = 0;
 }
 
+
+//to insert elements of priority queue in heap
 void MHeap::Insert(P_Queue obj)
 {
 	arr = new string[obj.queueSize];
@@ -318,6 +369,9 @@ void MHeap::Insert(P_Queue obj)
 		}
 	}
 }
+
+
+//Function to enqueue node
 void MHeap::Enqueue(Mnode* obj)
 {
 	if (root == NULL)
@@ -333,6 +387,9 @@ void MHeap::Enqueue(Mnode* obj)
 		size++;
 	}
 }
+
+
+//Function to dequeue node
 Mnode* MHeap::Dequeue()
 {
 	Mnode* del = root;
@@ -347,6 +404,8 @@ Mnode* MHeap::Dequeue()
 	return temp;
 }
 
+
+//Sorting list
 void MHeap::sort()
 {
 	Mnode* curr = root;
@@ -356,7 +415,7 @@ void MHeap::sort()
 	{
 		if (curr->prior > temp->prior)
 		{
-			if (curr == root)                  //If 
+			if (curr == root)
 			{
 				Mnode* tempNode = new Mnode;
 
@@ -369,7 +428,7 @@ void MHeap::sort()
 				root = temp;
 				temp->next = tempNode;
 			}
-			else                       //If 
+			else
 			{
 				Mnode* tempNode = new Mnode;
 
@@ -389,6 +448,8 @@ void MHeap::sort()
 	}
 }
 
+
+//function to implement the process of making huffman tree
 Mnode* MHeap::system()
 {
 	Mnode* Left, * Right;
@@ -401,12 +462,14 @@ Mnode* MHeap::system()
 	treeNode->data = '-';
 	return treeNode;
 }
+
+
+//Making tree and decreasing the priority queue
 void MHeap::HuffMan()
 {
 	while (size != 1)
 	{
 		Enqueue(system());
-		//root = merge_sort(root);
 		if (size == 0)
 		{
 			break;
@@ -414,6 +477,9 @@ void MHeap::HuffMan()
 		sort();
 	}
 }
+
+
+//Function used to find codes for a character
 void MHeap::Search(Mnode* curr, string val, char ch, string& F)
 {
 	if (curr != NULL)
@@ -429,21 +495,29 @@ void MHeap::Search(Mnode* curr, string val, char ch, string& F)
 		Search(curr->right, val + "1", ch, F);
 	}
 }
+
+
+//Function used to find codes of string alphaets using the above recursive function
 void MHeap::FindCode(string& s, char ch)
 {
 	Mnode* curr = root;
 	Search(curr, "", ch, s);
 }
+
+
+//function to assign codes from file to array
 void MHeap::AssignCodes(P_Queue obj, string str)
 {
+	codes.close();
 	codes.open("Table_Codes.txt", ios::out);
 	org.open("Original_Text.txt", ios::out);
+	encoded.close();
 	encoded.open("Encoded_Text.txt", ios::out);
-	for (int i = 0; i < CharNum; ++i)		//Making all codes null at start
+	for (int i = 0; i < CharNum; ++i)			//Making all codes null at start
 	{
 		arr[i] = "";
 	}
-	for (int i = 0; i < CharNum; ++i)		//Making all codes null at start
+	for (int i = 0; i < CharNum; ++i)			//Finding codes and storing them in array
 	{
 		FindCode(arr[i], obj.queueArray[i]);
 	}
@@ -490,6 +564,9 @@ void MHeap::AssignCodes(P_Queue obj, string str)
 	org.close();
 	encoded.close();
 }
+
+
+//Function to decode the text from the file
 void MHeap::read()
 {
 	int count = 0, i = 0;
@@ -503,7 +580,6 @@ void MHeap::read()
 	codes.close();
 
 	codes.open("Table_Codes.txt", ios::in);
-	//int* code = new int[count];
 	string code;
 	char* chr = new char[count];
 	string* strr = new string[count];
@@ -541,7 +617,5 @@ void MHeap::read()
 		}
 	}
 }
-
-
 
 
