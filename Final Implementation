@@ -11,35 +11,35 @@ using namespace std;
 
 
 //checks if the reference trie is present or not
-bool TrieNode::containKey(char ch)								
+bool TrieNode::containKey(char ch)
 {
 	return (links[ch - 'a'] != NULL);
 }
 
 
 //creating reference trie
-void TrieNode::put(char ch, TrieNode* node)						
+void TrieNode::put(char ch, TrieNode* node)
 {
 	links[ch - 'a'] = node;
 }
 
 
 //to get the next node for traversal
-TrieNode* TrieNode::get(char ch)	
+TrieNode* TrieNode::get(char ch)
 {
 	return links[ch - 'a'];
 }
 
 
 //setting flag to true at the end of the word
-void TrieNode::setEnd()		
+void TrieNode::setEnd()
 {
 	flag = true;
 }
 
 
 //checking if the word is completed or not
-bool TrieNode::isEnd()			                            
+bool TrieNode::isEnd()
 {
 	return flag;
 }
@@ -73,7 +73,7 @@ void TrieTree::insert(string word)
 
 
 //Recursive function to print suggessions
-void TrieTree::suggestionsRec(TrieNode* root, string currword)
+void TrieTree::Sugg(TrieNode* root, string currword)
 {
 	if (count < sugg_Limit)
 	{
@@ -89,7 +89,7 @@ void TrieTree::suggestionsRec(TrieNode* root, string currword)
 			if (root->links[i])						// child node character value
 			{
 				char child = 'a' + i;
-				suggestionsRec(root->links[i], currword + child);
+				Sugg(root->links[i], currword + child);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ void TrieTree::selectWord(string& str)
 
 
 // print suggestions for given query prefix
-void TrieTree::printAutoSuggestions(TrieNode* root, string word)
+void TrieTree::GiveSuggessions(TrieNode* root, string word)
 {
 	count = 0;
 	present = 0;
@@ -169,14 +169,14 @@ void TrieTree::printAutoSuggestions(TrieNode* root, string word)
 		}
 		node = node->get(word[i]);              //moves to reference trie
 	}
-	suggestionsRec(node, word);
+	Sugg(node, word);
 }
 
 
-					//------------------------------------Huffman Implementation-------------------------------------
+								//------------------------------------Huffman Implementation-------------------------------------
 
 
-													//Priority queue implementation
+																//Priority queue implementation
 
 
 //Constructor of priority queue node
@@ -187,7 +187,7 @@ PQ_node::PQ_node()
 
 
 //Constructor of priority queue
-P_Queue::P_Queue() 
+P_Queue::P_Queue()
 {
 	queueSize = 0;
 	char a = 'a';
@@ -262,7 +262,7 @@ void P_Queue::Insert(char ch, int num)
 
 
 //Applying bubble sort algorithim for sorting the queue arr
-void P_Queue::sort(char queuArray[], int priority[]) 
+void P_Queue::sort(char queuArray[], int priority[])
 {
 	int temp;
 	for (int i = 0; i < 26; ++i)
@@ -274,7 +274,7 @@ void P_Queue::sort(char queuArray[], int priority[])
 				temp = priority[j - 1];						//sorting the priority arr
 				priority[j - 1] = priority[j];
 				priority[j] = temp;
-				
+
 				temp = queuArray[j - 1];					//sorting the queue arr by priority
 				queuArray[j - 1] = queuArray[j];
 				queuArray[j] = temp;
@@ -285,7 +285,7 @@ void P_Queue::sort(char queuArray[], int priority[])
 
 
 //Function to display the values of Priority queue list
-void P_Queue::display() 
+void P_Queue::display()
 {
 	PQ_node* curr = head;
 	while (curr != NULL)
@@ -325,7 +325,7 @@ void P_Queue::get(string str, int size)
 }
 
 
-														//Minheap implementation
+																			//Minheap implementation
 
 //Constructor of MinHeap node
 Mnode::Mnode()
