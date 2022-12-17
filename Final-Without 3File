@@ -34,9 +34,9 @@ public:
 	TrieNode* root;
 	TrieTree();
 	void insert(string);									//Insertion in a trie tree
-	void suggestionsRec(TrieNode*, string);					//Recursive function to print suggessions
+	void Sugg(TrieNode*, string);							//Recursive function to print suggessions
 	void selectWord(string&);								//To select word from given suggessions
-	void printAutoSuggestions(TrieNode*, string);			//print suggestions for given string
+	void GiveSuggessions(TrieNode*, string);				//print suggestions for given string
 };
 
 
@@ -172,7 +172,7 @@ void TrieTree::insert(string word)
 
 
 //Recursive function to print suggessions
-void TrieTree::suggestionsRec(TrieNode* root, string currword)
+void TrieTree::Sugg(TrieNode* root, string currword)
 {
 	if (count < sugg_Limit)
 	{
@@ -188,7 +188,7 @@ void TrieTree::suggestionsRec(TrieNode* root, string currword)
 			if (root->links[i])						// child node character value
 			{
 				char child = 'a' + i;
-				suggestionsRec(root->links[i], currword + child);
+				Sugg(root->links[i], currword + child);
 			}
 		}
 	}
@@ -254,7 +254,7 @@ void TrieTree::selectWord(string& str)
 
 
 // print suggestions for given query prefix
-void TrieTree::printAutoSuggestions(TrieNode* root, string word)
+void TrieTree::GiveSuggessions(TrieNode* root, string word)
 {
 	count = 0;
 	present = 0;
@@ -268,7 +268,7 @@ void TrieTree::printAutoSuggestions(TrieNode* root, string word)
 		}
 		node = node->get(word[i]);              //moves to reference trie
 	}
-	suggestionsRec(node, word);
+	Sugg(node, word);
 }
 
 
@@ -797,7 +797,7 @@ void process()
 	}
 	string Final;
 	str = str + str2;
-	obj.printAutoSuggestions(obj.root, str);
+	obj.GiveSuggessions(obj.root, str);
 	do
 	{
 		cout << "---> Press 1 if you want to select from these suggessions\n---> Press 2 to add more characters\n---> Press any key to complete the word\n";
@@ -825,7 +825,7 @@ void process()
 				cin >> str2;
 			}
 			str += str2;
-			obj.printAutoSuggestions(obj.root, str);
+			obj.GiveSuggessions(obj.root, str);
 		}
 		else
 		{
@@ -872,7 +872,7 @@ void process()
 					}
 				}
 				str += str2;
-				obj.printAutoSuggestions(obj.root, str);
+				obj.GiveSuggessions(obj.root, str);
 			}
 		}
 	} while (choice == "1" || choice == "2");
@@ -897,7 +897,8 @@ void process()
 //Function for introductory display
 void start()
 {
-	char arr1[19][50] = {
+	char arr1[19][50] = 
+	{
 		{ ' ' ,' ' ,' ' , '*' ,'*','*','*','*',' ','*','*','*',' ','*', ' ','*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', ' ', ' ', '*', '*', ' ', ' '}
 		,{ ' ' ,' ' ,' ' ,'*' ,'*','*','*','*',' ','*','*','*',' ','*', ' ','*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', ' ', ' ', '*', '*', ' ', ' '}
 		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
@@ -918,6 +919,7 @@ void start()
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 	};
+
 	cout << "\n\n\n\n\n\n\n\n\n\n";
 	cout << "\t\t\t\t\t\t\tLOADING\n\t\t\t\t\t";
 	for (int i = 0; i < 36; i++)
@@ -957,12 +959,10 @@ void start()
 //Main / Driver program
 int main()
 {
-	start();
+	start();					//Introductory Display
 	system("cls");
-	process();
-
+	process();					//Text Editor function
 	system("pause");
 }
-
 
 
