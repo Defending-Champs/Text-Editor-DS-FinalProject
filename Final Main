@@ -8,6 +8,10 @@
 using namespace std;
 
 
+//------------------------------------------------------------------Start & Process------------------------------------------------------------------------
+
+
+
 //Main Function for text editor
 void process()
 {
@@ -49,6 +53,7 @@ void process()
 			if (Mobj.encoded.eof())
 			{
 				cout << "File is empty\n";
+				system("pause");
 			}
 			else
 			{
@@ -81,7 +86,7 @@ void process()
 	}
 	string Final;
 	str = str + str2;
-	obj.printAutoSuggestions(obj.root, str);
+	obj.GiveSuggessions(obj.root, str);
 	do
 	{
 		cout << "---> Press 1 if you want to select from these suggessions\n---> Press 2 to add more characters\n---> Press any key to complete the word\n";
@@ -109,7 +114,7 @@ void process()
 				cin >> str2;
 			}
 			str += str2;
-			obj.printAutoSuggestions(obj.root, str);
+			obj.GiveSuggessions(obj.root, str);
 		}
 		else
 		{
@@ -156,7 +161,7 @@ void process()
 					}
 				}
 				str += str2;
-				obj.printAutoSuggestions(obj.root, str);
+				obj.GiveSuggessions(obj.root, str);
 			}
 		}
 	} while (choice == "1" || choice == "2");
@@ -181,7 +186,8 @@ void process()
 //Function for introductory display
 void start()
 {
-	char arr1[19][50] = {
+	char arr1[19][50] =
+	{
 		{ ' ' ,' ' ,' ' , '*' ,'*','*','*','*',' ','*','*','*',' ','*', ' ','*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', ' ', ' ', '*', '*', ' ', ' '}
 		,{ ' ' ,' ' ,' ' ,'*' ,'*','*','*','*',' ','*','*','*',' ','*', ' ','*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', ' ', ' ', '*', '*', '*', ' ', '*', '*', '*', '*', '*', ' ', ' ', '*', ' ', ' ', '*', '*', ' ', ' '}
 		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
@@ -202,6 +208,7 @@ void start()
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 	};
+
 	cout << "\n\n\n\n\n\n\n\n\n\n";
 	cout << "\t\t\t\t\t\t\tLOADING\n\t\t\t\t\t";
 	for (int i = 0; i < 36; i++)
@@ -210,8 +217,8 @@ void start()
 		cout << '.';
 	}
 	Sleep(200);
-	cout << endl;
 	system("cls");
+	cout << endl;
 	for (int i = 0; i < 18; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -233,12 +240,18 @@ void start()
 }
 
 
+
+//------------------------------------------------------------------Main------------------------------------------------------------------------
+
+
+
 //Main / Driver program
 int main()
 {
-	start();
+	start();					//Introductory Display
 	system("cls");
-	process();
-
+	process();					//Text Editor function
 	system("pause");
 }
+
+
