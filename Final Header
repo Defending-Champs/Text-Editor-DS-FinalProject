@@ -6,12 +6,15 @@
 #include<conio.h>
 using namespace std;
 										
-					//-----------------------------------Trie trees ADT-------------------------------------
+//--------------------------------------------------------------------Classes-------------------------------------------------------------------------------
+
+
+								//-----------------------------------Trie trees ADT-------------------------------------
 
 struct TrieNode
 {
 	TrieNode* links[26];
-	bool flag = false;	
+	bool flag = false;
 	bool containKey(char);							//checks if the reference trie is present or not
 	void put(char, TrieNode*);						//creating reference trie
 	TrieNode* get(char);							//to get the next node for traversal
@@ -30,14 +33,14 @@ public:
 	TrieNode* root;
 	TrieTree();
 	void insert(string);									//Insertion in a trie tree
-	void suggestionsRec(TrieNode*, string);					//Recursive function to print suggessions
+	void Sugg(TrieNode*, string);							//Recursive function to print suggessions
 	void selectWord(string&);								//To select word from given suggessions
-	void printAutoSuggestions(TrieNode*, string);			//print suggestions for given string
+	void GiveSuggessions(TrieNode*, string);				//print suggestions for given string
 };
 
 
 
-						//-----------------------------------Priority queue ADT-------------------------------------
+//-----------------------------------Priority queue ADT-------------------------------------
 
 struct PQ_node
 {
@@ -65,7 +68,7 @@ public:
 
 
 
-						//-----------------------------------MinHeap ADT-------------------------------------
+//-----------------------------------MinHeap ADT-------------------------------------
 
 struct Mnode
 {
@@ -96,3 +99,5 @@ public:
 	void AssignCodes(P_Queue, string);							//function to assign codes from file to array
 	void read();												//Function to decode the text from the file
 };
+
+
