@@ -956,7 +956,7 @@ void start()
 
 
 
-//Main / Driver program
+//Main - Driver program
 int main()
 {
 	start();					//Introductory Display
