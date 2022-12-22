@@ -8,6 +8,31 @@
 using namespace std;
 
 
+//Function to get the string from the file
+void getstr(string& str)
+{
+	MHeap obj;
+	string temp;
+	obj.org.close();
+	obj.org.open("Original_Text.txt", ios::in);
+	if (!obj.org)
+	{
+		cout << "File not found!\n";
+	}
+	else
+	{
+		obj.org >> temp;
+		str = str + temp;
+		while (!obj.org.eof())
+		{
+			str = str + " ";
+			obj.org >> temp;
+			str = str + temp;
+		}
+	}
+}
+
+
 //Function to display the encoded test in the file
 void DisplayEncoded()
 {
@@ -43,6 +68,7 @@ void process()
 	MHeap Mobj;
 	P_Queue Pobj;
 	string R, str1, search, str = "", str2, choice;
+	string Final = "";
 	int h = 0;
 	ifstream wordsfile;
 	wordsfile.open("outfile.txt");
@@ -65,6 +91,7 @@ void process()
 		}
 		h++;
 	}
+	wordsfile.close();
 	cout << "Enter 1 if you want to decode the last text\n";
 	cin >> choice;
 	char c;
@@ -81,6 +108,11 @@ void process()
 			}
 			else
 			{
+				getstr(Final);
+				int S = Final.length();
+				Pobj.get(Final, S);
+				Mobj.Insert(Pobj);
+				Mobj.HuffMan();
 				cout << "Encoded text is : ";
 				DisplayEncoded();
 				cout << "Decoded text : ";
@@ -93,12 +125,14 @@ void process()
 		else
 		{
 			cout << "File not opened\n";
+			system("pause");
 		}
 	}
 	else
 	{
 		system("pause");
 	}
+	Final = "";
 	system("cls");
 	cout << "Enter First Letter of string : " << str;
 	cin >> str2;
@@ -114,7 +148,6 @@ void process()
 		}
 		cin >> str2;
 	}
-	string Final = "";
 	str = str + str2;
 	obj.GiveSuggessions(obj.root, str);
 	do
@@ -241,7 +274,7 @@ void start()
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ','_','*','-',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','_','*','-',' ',' ', '*','*','*',' ','_','*','-',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
 	};
-
+	system("cls");
 	cout << "\n\n\n\n\n\n\n\n\n\n";
 	cout << "\t\t\t\t\t\t\tLOADING\n\t\t\t\t\t";
 	for (int i = 0; i < 36; i++)
@@ -282,7 +315,7 @@ void start()
 
 
 
-//------------------------------------------------------------------Main------------------------------------------------------------------------
+//------------------------------------------------------------------Main-------------------------------------------------------------------------
 
 
 
