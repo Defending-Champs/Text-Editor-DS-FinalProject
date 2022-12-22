@@ -399,6 +399,10 @@ void P_Queue::display()
 //Main function which gets a string,its size and sort by priority and insert in list
 void P_Queue::get(string str, int size)
 {
+	if (head != NULL)
+	{
+		head = NULL;
+	}
 	for (int i = 0; i < size; i++)				// loop till Size of string
 	{
 		for (int j = 0; j < 26; j++)			// loop for total alphabets
@@ -445,6 +449,10 @@ MHeap::MHeap()
 //to insert elements of priority queue in heap
 void MHeap::Insert(P_Queue obj)
 {
+	if (root != NULL)
+	{
+		root = NULL;
+	}
 	arr = new string[obj.queueSize];
 	size = obj.queueSize;
 	CharNum = obj.queueSize;
@@ -576,7 +584,6 @@ void MHeap::HuffMan()
 		}
 		sort();
 	}
-
 }
 
 
@@ -649,14 +656,7 @@ void MHeap::AssignCodes(P_Queue obj, string str)
 				if (str[i] == obj.queueArray[j])
 				{
 					org << str[i];
-					if (i != size - 1)
-					{
-						encoded << arr[j] << " ";
-					}
-					else
-					{
-						encoded << arr[j];
-					}
+					encoded << arr[j];
 				}
 			}
 		}
@@ -671,7 +671,9 @@ void MHeap::AssignCodes(P_Queue obj, string str)
 void MHeap::read()
 {
 	int count = 0, i = 0;
+	int counter;
 	string str;
+	codes.close();
 	codes.open("Table_Codes.txt", ios::in);
 	while (!codes.eof())
 	{
@@ -679,7 +681,6 @@ void MHeap::read()
 		count++;
 	}
 	codes.close();
-
 	codes.open("Table_Codes.txt", ios::in);
 	string code;
 	char* chr = new char[count];
@@ -690,9 +691,10 @@ void MHeap::read()
 		codes >> strr[i];
 		i++;
 	}
+	codes.close();
 	encoded.close();
 	encoded.open("Encoded_Text.txt", ios::in);
-	while (!encoded.eof())
+	/*while (!encoded.eof())
 	{
 		string str2 = "";
 		i = 0;
@@ -715,6 +717,59 @@ void MHeap::read()
 				cout << chr[i];
 				break;
 			}
+		}
+	}*/
+	i = 0;
+	encoded >> str;
+	counter = str.size();
+	Mnode* curr = root;
+	string temp, decoded = "";
+	while (i <= counter)
+	{
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			temp = curr->data;
+			decoded += temp;
+			curr = root;
+		}
+		if (str[i] == '0')
+		{
+			curr = curr->left;
+		}
+		else if(str[i] == '1')
+		{
+			curr = curr->right;
+		}
+		else if (str[i] == '-')
+		{
+			decoded = decoded + " ";
+		}
+		i++;
+	}
+	cout << decoded;
+}
+
+
+//Function to get the string from the file
+void getstr(string& str)
+{
+	MHeap obj;
+	string temp;
+	obj.org.close();
+	obj.org.open("Original_Text.txt", ios::in);
+	if (!obj.org)
+	{
+		cout << "File not found!\n";
+	}
+	else
+	{
+		obj.org >> temp;
+		str = str + temp;
+		while (!obj.org.eof())
+		{
+			str = str + " ";
+			obj.org >> temp;
+			str = str + temp;
 		}
 	}
 }
@@ -755,6 +810,7 @@ void process()
 	MHeap Mobj;
 	P_Queue Pobj;
 	string R, str1, search, str = "", str2, choice;
+	string Final = "";
 	int h = 0;
 	ifstream wordsfile;
 	wordsfile.open("outfile.txt");
@@ -777,6 +833,7 @@ void process()
 		}
 		h++;
 	}
+	wordsfile.close();
 	cout << "Enter 1 if you want to decode the last text\n";
 	cin >> choice;
 	char c;
@@ -793,6 +850,11 @@ void process()
 			}
 			else
 			{
+				getstr(Final);
+				int S = Final.length();
+				Pobj.get(Final, S);
+				Mobj.Insert(Pobj);
+				Mobj.HuffMan();
 				cout << "Encoded text is : ";
 				DisplayEncoded();
 				cout << "Decoded text : ";
@@ -805,12 +867,14 @@ void process()
 		else
 		{
 			cout << "File not opened\n";
+			system("pause");
 		}
 	}
 	else
 	{
 		system("pause");
 	}
+	Final = "";
 	system("cls");
 	cout << "Enter First Letter of string : " << str;
 	cin >> str2;
@@ -826,7 +890,6 @@ void process()
 		}
 		cin >> str2;
 	}
-	string Final = "";
 	str = str + str2;
 	obj.GiveSuggessions(obj.root, str);
 	do
