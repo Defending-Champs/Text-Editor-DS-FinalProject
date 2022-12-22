@@ -94,7 +94,7 @@ public:
 	void sort();												//Sorting list
 	Mnode* system();											//function to implement the process of making huffman tree
 	void HuffMan();												//Making tree and decreasing the priority queue
-	void Search(Mnode* crr, string, char, string&);				//Function used to find codes for a character
+	void Search(Mnode*, string, char, string&);				//Function used to find codes for a character
 	void FindCode(string&, char);								//Function used to find codes of string alphaets using the above recursive function
 	void AssignCodes(P_Queue, string);							//function to assign codes from file to array
 	void read();												//Function to decode the text from the file
