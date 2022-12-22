@@ -793,7 +793,7 @@ void process()
 			}
 			else
 			{
-				cout << "Encoded text is : \n";
+				cout << "Encoded text is : ";
 				DisplayEncoded();
 				cout << "Decoded text : ";
 				Mobj.read();
@@ -916,6 +916,7 @@ void process()
 	Mobj.Insert(Pobj);
 	Mobj.HuffMan();
 	Mobj.AssignCodes(Pobj, Final);
+	cout << "Encoded Text : ";
 	DisplayEncoded();
 	cout << "Enter 1 if you want to decode : \n";
 	cin >> choice;
