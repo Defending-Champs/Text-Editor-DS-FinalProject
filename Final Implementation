@@ -173,10 +173,10 @@ void TrieTree::GiveSuggessions(TrieNode* root, string word)
 }
 
 
-								//------------------------------------Huffman Implementation-------------------------------------
+						//------------------------------------Huffman Implementation-------------------------------------
 
 
-																//Priority queue implementation
+//Priority queue implementation
 
 
 //Constructor of priority queue node
@@ -300,6 +300,10 @@ void P_Queue::display()
 //Main function which gets a string,its size and sort by priority and insert in list
 void P_Queue::get(string str, int size)
 {
+	if (head != NULL)
+	{
+		head = NULL;
+	}
 	for (int i = 0; i < size; i++)				// loop till Size of string
 	{
 		for (int j = 0; j < 26; j++)			// loop for total alphabets
@@ -325,7 +329,8 @@ void P_Queue::get(string str, int size)
 }
 
 
-																			//Minheap implementation
+//Minheap implementation
+
 
 //Constructor of MinHeap node
 Mnode::Mnode()
@@ -345,6 +350,10 @@ MHeap::MHeap()
 //to insert elements of priority queue in heap
 void MHeap::Insert(P_Queue obj)
 {
+	if (root != NULL)
+	{
+		root = NULL;
+	}
 	arr = new string[obj.queueSize];
 	size = obj.queueSize;
 	CharNum = obj.queueSize;
@@ -548,14 +557,7 @@ void MHeap::AssignCodes(P_Queue obj, string str)
 				if (str[i] == obj.queueArray[j])
 				{
 					org << str[i];
-					if (i != size - 1)
-					{
-						encoded << arr[j] << " ";
-					}
-					else
-					{
-						encoded << arr[j];
-					}
+					encoded << arr[j];
 				}
 			}
 		}
@@ -570,7 +572,9 @@ void MHeap::AssignCodes(P_Queue obj, string str)
 void MHeap::read()
 {
 	int count = 0, i = 0;
+	int counter;
 	string str;
+	codes.close();
 	codes.open("Table_Codes.txt", ios::in);
 	while (!codes.eof())
 	{
@@ -578,7 +582,6 @@ void MHeap::read()
 		count++;
 	}
 	codes.close();
-
 	codes.open("Table_Codes.txt", ios::in);
 	string code;
 	char* chr = new char[count];
@@ -589,9 +592,10 @@ void MHeap::read()
 		codes >> strr[i];
 		i++;
 	}
+	codes.close();
 	encoded.close();
 	encoded.open("Encoded_Text.txt", ios::in);
-	while (!encoded.eof())
+	/*while (!encoded.eof())
 	{
 		string str2 = "";
 		i = 0;
@@ -615,9 +619,35 @@ void MHeap::read()
 				break;
 			}
 		}
+	}*/
+	i = 0;
+	encoded >> str;
+	counter = str.size();
+	Mnode* curr = root;
+	string temp, decoded = "";
+	while (i <= counter)
+	{
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			temp = curr->data;
+			decoded += temp;
+			curr = root;
+		}
+		if (str[i] == '0')
+		{
+			curr = curr->left;
+		}
+		else if (str[i] == '1')
+		{
+			curr = curr->right;
+		}
+		else if (str[i] == '-')
+		{
+			decoded = decoded + " ";
+		}
+		i++;
 	}
+	cout << decoded;
 }
-
-
 
 
