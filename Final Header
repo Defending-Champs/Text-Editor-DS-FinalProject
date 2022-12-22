@@ -1,12 +1,14 @@
 //--------------------------------------------------------------------Header file-------------------------------------------------------------------------------
 #pragma once
-
 #include<iostream>
 #include<fstream>
 #include<string>
 #include<conio.h>
+#include <windows.h>
+
 using namespace std;
-										
+
+
 //--------------------------------------------------------------------Classes-------------------------------------------------------------------------------
 
 
@@ -41,7 +43,7 @@ public:
 
 
 
-//-----------------------------------Priority queue ADT-------------------------------------
+							//-----------------------------------Priority queue ADT-------------------------------------
 
 struct PQ_node
 {
@@ -59,7 +61,7 @@ public:
 	char queueArray[26];
 	int priority[26];
 	int queueSize;
-	P_Queue();										// constructor
+	P_Queue();										//constructor
 	bool IsEmpty();									//Check if queue is empty
 	void Insert(char, int);							//inserting element in priority queue list
 	void sort(char[], int[]);						//Applying bubble sort algorithim for sorting the queue arr
@@ -69,7 +71,7 @@ public:
 
 
 
-//-----------------------------------MinHeap ADT-------------------------------------
+								//-----------------------------------MinHeap ADT-------------------------------------
 
 struct Mnode
 {
@@ -95,10 +97,11 @@ public:
 	void sort();												//Sorting list
 	Mnode* system();											//function to implement the process of making huffman tree
 	void HuffMan();												//Making tree and decreasing the priority queue
-	void Search(Mnode*, string, char, string&);				//Function used to find codes for a character
+	void Search(Mnode*, string, char, string&);					//Function used to find codes for a character
 	void FindCode(string&, char);								//Function used to find codes of string alphaets using the above recursive function
 	void AssignCodes(P_Queue, string);							//function to assign codes from file to array
 	void read();												//Function to decode the text from the file
 };
+
 
 
