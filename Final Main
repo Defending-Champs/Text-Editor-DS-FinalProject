@@ -8,6 +8,30 @@
 using namespace std;
 
 
+//Function to display the encoded test in the file
+void DisplayEncoded()
+{
+	string str, temp;
+	MHeap obj;
+	obj.encoded.close();
+	obj.encoded.open("Encoded_Text.txt", ios::in);
+	if (!obj.encoded)
+	{
+		cout << "File not found!\n";
+	}
+	else
+	{
+		while (!obj.encoded.eof())
+		{
+			obj.encoded >> temp;
+			str += temp;
+		}
+	}
+	cout << str << endl;
+}
+
+
+
 //------------------------------------------------------------------Start & Process------------------------------------------------------------------------
 
 
@@ -57,6 +81,8 @@ void process()
 			}
 			else
 			{
+				cout << "Encoded text is : \n";
+				DisplayEncoded();
 				cout << "Decoded text : ";
 				Mobj.read();
 				cout << endl;
@@ -74,7 +100,7 @@ void process()
 		system("pause");
 	}
 	system("cls");
-	cout << "Enter string : " << str;
+	cout << "Enter First Letter of string : " << str;
 	cin >> str2;
 	while ((str2.size() > 1) || (str2[0] < 'a' || str2[0]>'z'))
 	{
@@ -88,7 +114,7 @@ void process()
 		}
 		cin >> str2;
 	}
-	string Final;
+	string Final = "";
 	str = str + str2;
 	obj.GiveSuggessions(obj.root, str);
 	do
@@ -103,7 +129,7 @@ void process()
 		else if (choice == "2")
 		{
 			system("cls");
-			cout << "Enter string : " << str;
+			cout << "Enter string : " << Final + str;
 			cin >> str2;
 			while ((str2.size() > 1) || (str2[0] < 'a' || str2[0]>'z'))
 			{
@@ -147,7 +173,7 @@ void process()
 				Final += str + " ";
 				str = "";
 				system("cls");
-				cout << "Enter string : " << str;
+				cout << "Enter string : " << Final;
 				cin >> str2;
 				while (str2 < "a" || str2>"z")
 				{
@@ -178,11 +204,13 @@ void process()
 	Mobj.Insert(Pobj);
 	Mobj.HuffMan();
 	Mobj.AssignCodes(Pobj, Final);
+	DisplayEncoded();
 	cout << "Enter 1 if you want to decode : \n";
 	cin >> choice;
 	if (choice == "1")
 	{
 		Mobj.read();
+		cout << endl;
 	}
 }
 
